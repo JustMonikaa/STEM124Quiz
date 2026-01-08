@@ -384,14 +384,16 @@
         }
 
         // --- XML LOADER ---
+       // --- XML LOADER ---
         window.addEventListener('DOMContentLoaded', async () => {
             
-            // Start the background effect immediately
             initBackgroundEffects();
 
             try {
-                // Fetch the XML file
-                const response = await fetch('questions.xml');
+                // FORCE FRESH RELOAD: We add '?v=' + timestamp to the URL
+                // This tricks the browser into thinking it's a new file every time
+                const cacheBuster = new Date().getTime();
+                const response = await fetch(`questions.xml?v=${cacheBuster}`);
                 
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
@@ -400,14 +402,21 @@
                 const str = await response.text();
                 const parser = new DOMParser();
                 const xmlDoc = parser.parseFromString(str, "text/xml");
+
+                // Check for XML parsing errors (like missing brackets)
+                const parseError = xmlDoc.getElementsByTagName("parsererror");
+                if (parseError.length > 0) {
+                    throw new Error("XML Syntax Error: Check your tags!");
+                }
                 
                 const items = xmlDoc.getElementsByTagName("item");
                 
-                // Parse XML into our Javascript Array
                 quizData = Array.from(items).map(item => {
                     const qText = item.getElementsByTagName("question")[0].textContent;
                     const opts = Array.from(item.getElementsByTagName("option")).map(o => o.textContent);
-                    const ansIndex = parseInt(item.getElementsByTagName("answer")[0].textContent);
+                    
+                    // FIXED: We subtract 1 because your XML uses 1-4, but code needs 0-3
+                    const ansIndex = parseInt(item.getElementsByTagName("answer")[0].textContent) - 1;
                     
                     return {
                         question: qText,
@@ -423,7 +432,7 @@
                 showScreen('title');
 
             } catch (e) {
-                screens.loading.innerHTML = "Error loading 'questions.xml'.<br>Ensure you are running on a Server (or GitHub Pages).";
+                screens.loading.innerHTML = "Error loading data.<br>" + e.message;
                 console.error("XML Load Error:", e);
             }
         });
@@ -542,4 +551,5 @@
     </script>
 </body>
 </html>
+
 
