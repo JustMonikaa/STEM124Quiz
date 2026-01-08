@@ -148,7 +148,7 @@ In hypothesis testing, which statement represents the assumption that the experi
 <item>
         <question>A researcher tests if 'Temperature' affects 'Study Time.' They make sure everyone uses the same desk and the same lighting. Same desk and lighting are:</question>
         <options>
-            <option>Independent variable/option>
+            <option>Independent variable</option>
             <option>Extraneous variable</option>
             <option>Controlled variable</option>
             <option>Dependent variable</option>
@@ -159,7 +159,7 @@ In hypothesis testing, which statement represents the assumption that the experi
 <item>
         <question>A researcher finds that kids who eat breakfast have higher grades. However, they realize the breakfast group also gets more sleep. The 'sleep' factor is a:</question>
         <options>
-            <option>Independent variable/option>
+            <option>Independent variable</option>
             <option>Dependent variable</option>
             <option>Extraneous variable</option>
             <option>Confounding variable</option>
@@ -168,3 +168,4 @@ In hypothesis testing, which statement represents the assumption that the experi
     </item>
     
     </quiz>
+
