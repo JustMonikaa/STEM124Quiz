@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+    <item>
+        <question>Which law states that F = ma?</question>
+        <options>
+            <option>Newton's First Law</option>
+            <option>Newton's Second Law</option>
+            <option>Newton's Third Law</option>
+            <option>Law of Inertia</option>
+        </options>
+        <answer>1</answer> 
+    </item>
+
+    <item>
+        <question>What is the SI unit of Force?</question>
+        <options>
+            <option>Joule</option>
+            <option>Watt</option>
+            <option>Newton</option>
+            <option>Pascal</option>
+        </options>
+        <answer>2</answer>
+    </item>
+
+    <item>
+        <question>Sound travels fastest in which medium?</question>
+        <options>
+            <option>Vacuum</option>
+            <option>Air</option>
+            <option>Water</option>
+            <option>Steel</option>
+        </options>
+        <answer>3</answer>
+    </item>
+
+    </quiz>

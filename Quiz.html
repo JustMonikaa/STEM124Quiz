@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HSR Style Quiz</title>
+    <style>
+        /* --- CORE HSR AESTHETICS --- */
+        :root {
+            --hsr-gold: #D7BC85;
+            --hsr-gold-hover: #F2E3C4;
+            --hsr-dark-blue: #1C1F2B;
+            --hsr-bg: #0F1118;
+            --hsr-white: #F0F0F0;
+            --hsr-subtext: #8C90A5;
+            --hsr-highlight-green: #59D9A6;
+            --hsr-highlight-red: #D95959;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@400;600&display=swap');
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Rajdhani', sans-serif;
+            background-color: var(--hsr-bg);
+            background-image: 
+                radial-gradient(circle at 20% 20%, rgba(29, 33, 50, 0.8) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(215, 188, 133, 0.1) 0%, transparent 40%);
+            color: var(--hsr-white);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            user-select: none;
+        }
+
+        #game-container {
+            width: 90%;
+            max-width: 1000px;
+            height: 80vh;
+            position: relative;
+            background: rgba(28, 31, 43, 0.7);
+            border: 1px solid rgba(215, 188, 133, 0.3);
+            backdrop-filter: blur(10px);
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%);
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        }
+
+        .screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            box-sizing: border-box;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .screen.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            color: var(--hsr-gold);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        h2 { font-size: 2rem; margin-bottom: 20px; }
+        p { font-size: 1.2rem; color: var(--hsr-subtext); max-width: 600px; line-height: 1.5; }
+
+        .hsr-btn {
+            background: var(--hsr-gold);
+            color: var(--hsr-dark-blue);
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            cursor: pointer;
+            margin-top: 30px;
+            clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+            transition: all 0.2s ease;
+        }
+
+        .hsr-btn:hover {
+            background: var(--hsr-gold-hover);
+            transform: scale(1.05);
+            box-shadow: 0 0 15px var(--hsr-gold);
+        }
+
+        .hsr-btn:disabled {
+            background: #555;
+            color: #888;
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
+
+        .timer-bar-container {
+            width: 100%;
+            height: 4px;
+            background: rgba(255,255,255,0.1);
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .timer-bar {
+            height: 100%;
+            background: var(--hsr-gold);
+            width: 100%;
+        }
+
+        .question-box {
+            background: rgba(0,0,0,0.3);
+            border-left: 4px solid var(--hsr-gold);
+            padding: 20px;
+            width: 100%;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            width: 100%;
+        }
+
+        .option-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 15px 20px;
+            text-align: left;
+            cursor: pointer;
+            transition: 0.3s;
+            position: relative;
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%);
+        }
+
+        /* Visual state for the selected/correct answer */
+        .option-card.correct-answer {
+            background: rgba(89, 217, 166, 0.2);
+            border-color: var(--hsr-highlight-green);
+            color: var(--hsr-highlight-green);
+            font-weight: bold;
+        }
+
+        .option-card::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0; width: 4px;
+            background: var(--hsr-subtext);
+            transition: 0.3s;
+        }
+        .option-card.correct-answer::before { background: var(--hsr-highlight-green); }
+
+        .info-hud {
+            position: absolute;
+            top: 20px; right: 20px;
+            font-family: 'Orbitron', sans-serif;
+            color: var(--hsr-gold);
+            font-size: 1.2rem;
+        }
+
+        /* Loading Overlay */
+        #loading-overlay {
+            position: absolute;
+            top:0; left:0; width:100%; height:100%;
+            background: var(--hsr-bg);
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--hsr-gold);
+            font-family: 'Orbitron';
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-entry { animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    </style>
+</head>
+<body>
+
+    <div id="game-container">
+        
+        <div id="loading-overlay">Initializing System...</div>
+
+        <div id="title-screen" class="screen">
+            <h1 class="animate-entry">Interastral Quiz</h1>
+            <p class="animate-entry" style="animation-delay: 0.1s">Physics & General Knowledge Assessment</p>
+            <button class="hsr-btn animate-entry" style="animation-delay: 0.2s" onclick="goToInstructions()">Play</button>
+        </div>
+
+        <div id="instruction-screen" class="screen">
+            <h2>Mission Briefing</h2>
+            <div style="text-align: left; background: rgba(0,0,0,0.4); padding: 20px; border: 1px solid #333; margin-bottom: 20px;">
+                <p><strong>1.</strong> The quiz consists of <span id="total-questions-count">15</span> questions.</p>
+                <p><strong>2.</strong> You have 60 seconds per question.</p>
+                <p><strong>3.</strong> If the timer runs out, the system advances automatically.</p>
+                <p><strong>4.</strong> Review phase will initiate upon completion.</p>
+            </div>
+            <button class="hsr-btn" onclick="startQuiz()">Start Mission</button>
+        </div>
+
+        <div id="quiz-screen" class="screen">
+            <div class="timer-bar-container">
+                <div id="timer-bar" class="timer-bar"></div>
+            </div>
+            
+            <div class="info-hud">
+                <span id="question-counter">01</span> / <span id="total-count-hud">15</span>
+            </div>
+
+            <div class="question-box animate-entry">
+                <h3 id="question-text">Loading Data...</h3>
+            </div>
+
+            <div class="options-grid" id="options-container">
+                </div>
+
+            <button id="show-answer-btn" class="hsr-btn" style="display:none;" onclick="revealAnswer()">Show Answer</button>
+            <button id="next-review-btn" class="hsr-btn" style="display:none; margin-left: 10px; background-color: #555;" onclick="nextReviewQuestion()">Next</button>
+        </div>
+
+        <div id="times-up-screen" class="screen">
+            <h1>Mission Complete</h1>
+            <p>All questions have been cycled.</p>
+            <button class="hsr-btn" onclick="startReview()">Let's Check</button>
+        </div>
+
+        <div id="score-screen" class="screen">
+            <h1>Evaluation</h1>
+            <h2>What's your score?</h2>
+            <p>Tally your correct answers from the review phase.</p>
+            <button class="hsr-btn" onclick="location.reload()">Return to Menu</button>
+        </div>
+    </div>
+
+    <script>
+        // --- DATA VARS ---
+        let quizData = [];
+        let currentQuestionIndex = 0;
+        let timerInterval;
+        let timeLeft = 60;
+        let isReviewMode = false;
+        let correctAnswersCount = 0; // Tracks score for user reference
+
+        // --- DOM ELEMENTS ---
+        const screens = {
+            title: document.getElementById('title-screen'),
+            instructions: document.getElementById('instruction-screen'),
+            quiz: document.getElementById('quiz-screen'),
+            timesUp: document.getElementById('times-up-screen'),
+            score: document.getElementById('score-screen'),
+            loading: document.getElementById('loading-overlay')
+        };
+
+        const ui = {
+            questionText: document.getElementById('question-text'),
+            optionsContainer: document.getElementById('options-container'),
+            counter: document.getElementById('question-counter'),
+            totalHud: document.getElementById('total-count-hud'),
+            totalIntro: document.getElementById('total-questions-count'),
+            timerBar: document.getElementById('timer-bar'),
+            showAnswerBtn: document.getElementById('show-answer-btn'),
+            nextReviewBtn: document.getElementById('next-review-btn')
+        };
+
+        // --- XML LOADER ---
+        window.addEventListener('DOMContentLoaded', async () => {
+            try {
+                // Fetch the XML file
+                const response = await fetch('questions.xml');
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const str = await response.text();
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(str, "text/xml");
+                
+                const items = xmlDoc.getElementsByTagName("item");
+                
+                // Parse XML into our Javascript Array
+                quizData = Array.from(items).map(item => {
+                    // Get Question Text
+                    const qText = item.getElementsByTagName("question")[0].textContent;
+                    
+                    // Get Options
+                    const opts = Array.from(item.getElementsByTagName("option")).map(o => o.textContent);
+                    
+                    // Get Correct Index (ensure it's an integer)
+                    const ansIndex = parseInt(item.getElementsByTagName("answer")[0].textContent);
+                    
+                    return {
+                        question: qText,
+                        options: opts,
+                        correctIndex: ansIndex
+                    };
+                });
+
+                // Update UI with question count
+                ui.totalHud.innerText = quizData.length;
+                ui.totalIntro.innerText = quizData.length;
+
+                // Hide loading, show title
+                screens.loading.style.display = 'none';
+                showScreen('title');
+
+            } catch (e) {
+                screens.loading.innerHTML = "Error loading 'questions.xml'.<br>If running locally, please use a Local Server (e.g. VS Code Live Server).";
+                console.error("XML Load Error:", e);
+            }
+        });
+
+        // --- NAVIGATION ---
+        function showScreen(screenName) {
+            Object.values(screens).forEach(s => {
+                if(s.id !== 'loading-overlay') { // Don't mess with loading screen logic here
+                    s.classList.remove('active');
+                    s.style.display = 'none';
+                }
+            });
+            const target = screens[screenName];
+            target.style.display = 'flex';
+            setTimeout(() => { target.classList.add('active'); }, 10);
+        }
+
+        function goToInstructions() { showScreen('instructions'); }
+
+        // --- GAME LOGIC ---
+        function startQuiz() {
+            currentQuestionIndex = 0;
+            isReviewMode = false;
+            showScreen('quiz');
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            const data = quizData[currentQuestionIndex];
+            ui.questionText.innerText = data.question;
+            ui.counter.innerText = (currentQuestionIndex + 1).toString().padStart(2, '0');
+            ui.optionsContainer.innerHTML = '';
+
+            data.options.forEach((opt, index) => {
+                const div = document.createElement('div');
+                div.className = 'option-card animate-entry';
+                div.style.animationDelay = `${index * 0.1}s`;
+                div.innerText = opt;
+                div.id = `option-${index}`;
+                ui.optionsContainer.appendChild(div);
+            });
+
+            if (isReviewMode) {
+                ui.timerBar.parentElement.style.display = 'none';
+                ui.showAnswerBtn.style.display = 'inline-block';
+                ui.nextReviewBtn.style.display = 'inline-block';
+                ui.showAnswerBtn.disabled = false;
+                ui.showAnswerBtn.innerText = "Show Answer";
+                ui.showAnswerBtn.style.backgroundColor = "var(--hsr-gold)";
+            } else {
+                ui.timerBar.parentElement.style.display = 'block';
+                ui.showAnswerBtn.style.display = 'none';
+                ui.nextReviewBtn.style.display = 'none';
+                startTimer();
+            }
+        }
+
+        function startTimer() {
+            timeLeft = 60;
+            ui.timerBar.style.width = '100%';
+            ui.timerBar.style.transition = 'width 1s linear';
+            
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                const percentage = (timeLeft / 60) * 100;
+                ui.timerBar.style.width = `${percentage}%`;
+
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    nextQuestion();
+                }
+            }, 1000);
+        }
+
+        function nextQuestion() {
+            // Force transition reset for next bar
+            ui.timerBar.style.transition = 'none';
+            ui.timerBar.style.width = '100%';
+            
+            currentQuestionIndex++;
+            if (currentQuestionIndex < quizData.length) {
+                loadQuestion();
+            } else {
+                showScreen('timesUp');
+            }
+        }
+
+        function startReview() {
+            currentQuestionIndex = 0;
+            isReviewMode = true;
+            showScreen('quiz');
+            loadQuestion();
+        }
+
+        function revealAnswer() {
+            const data = quizData[currentQuestionIndex];
+            const correctOption = document.getElementById(`option-${data.correctIndex}`);
+            
+            if(correctOption) {
+                correctOption.classList.add('correct-answer');
+            }
+            
+            ui.showAnswerBtn.disabled = true;
+            ui.showAnswerBtn.innerText = "Revealed";
+            ui.showAnswerBtn.style.backgroundColor = "#555";
+        }
+
+        function nextReviewQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < quizData.length) {
+                loadQuestion();
+            } else {
+                showScreen('score');
+            }
+        }
+    </script>
+</body>
+</html>
