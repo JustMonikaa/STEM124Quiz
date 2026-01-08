@@ -27,6 +27,7 @@
             padding: 0;
             font-family: 'Rajdhani', sans-serif;
             background-color: var(--hsr-bg);
+            /* Static background gradient */
             background-image: 
                 radial-gradient(circle at 20% 20%, rgba(29, 33, 50, 0.8) 0%, transparent 50%),
                 radial-gradient(circle at 80% 80%, rgba(215, 188, 133, 0.1) 0%, transparent 40%);
@@ -38,27 +39,63 @@
             overflow: hidden;
             user-select: none;
             font-weight: 500;
+            position: relative; /* Needed for absolute layering */
         }
 
-        /* --- CONTAINER (MODIFIED: WIDER) --- */
-        #game-container {
-            width: 95%;              /* Takes up more screen width */
-            max-width: 1400px;       /* Increased from 1000px to 1400px */
-            height: 85vh;            /* Slightly taller to accommodate large text */
-            position: relative;
-            background: rgba(28, 31, 43, 0.7);
-            border: 1px solid rgba(215, 188, 133, 0.3);
-            backdrop-filter: blur(10px);
-            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%);
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
-        }
-
-        .screen {
+        /* --- BACKGROUND ANIMATION LAYER --- */
+        #bg-fx {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
+            z-index: 0; /* Behind the game container */
+            pointer-events: none; /* Mouse clicks go through it */
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            background: var(--hsr-gold);
+            transform: rotate(45deg); /* Diamond shape typical of HSR */
+            opacity: 0; /* Start invisible */
+        }
+
+        /* The floating animation */
+        @keyframes floatUp {
+            0% {
+                transform: translateY(110vh) rotate(45deg) scale(0.5);
+                opacity: 0;
+            }
+            20% {
+                opacity: var(--target-opacity); /* Fade in */
+            }
+            80% {
+                opacity: var(--target-opacity); /* Stay visible */
+            }
+            100% {
+                transform: translateY(-10vh) rotate(225deg) scale(1); /* Move up and rotate */
+                opacity: 0;
+            }
+        }
+
+        /* --- MAIN CONTAINER --- */
+        #game-container {
+            position: relative;
+            z-index: 10; /* Sits ABOVE the background particles */
+            width: 95%;
+            max-width: 1400px;
+            height: 85vh;
+            background: rgba(28, 31, 43, 0.05); /* Slightly more opaque to separate from particles */
+            border: 1px solid rgba(215, 188, 133, 0.3);
+            backdrop-filter: blur(2px);
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%);
+            box-shadow: 0 0 30px rgba(0,0,0,0.7);
+        }
+
+        .screen {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
             display: none;
             flex-direction: column;
             justify-content: center;
@@ -70,27 +107,25 @@
             transition: opacity 0.5s ease;
         }
 
-        .screen.active {
-            display: flex;
-            opacity: 1;
-        }
+        .screen.active { display: flex; opacity: 1; }
 
-        /* --- TYPOGRAPHY (MODIFIED: LARGER) --- */
+        /* --- TYPOGRAPHY --- */
         h1 {
             font-family: 'Michroma', sans-serif;
-            font-size: 3.5rem;       /* Increased size */
+            font-size: 3.5rem;
             color: var(--hsr-gold);
             margin-bottom: 20px;
             text-transform: uppercase;
             letter-spacing: 2px;
+            text-shadow: 0 0 20px rgba(215, 188, 133, 0.3);
         }
 
-        h2 { font-size: 2.5rem; margin-bottom: 20px; } /* Increased size */
+        h2 { font-size: 2.5rem; margin-bottom: 20px; }
         
         p { 
-            font-size: 1.5rem;       /* Increased size for instructions */
+            font-size: 1.5rem;
             color: var(--hsr-subtext); 
-            max-width: 800px;        /* Allowed wider text block */
+            max-width: 800px;
             line-height: 1.6; 
         }
 
@@ -98,9 +133,9 @@
             background: var(--hsr-gold);
             color: var(--hsr-dark-blue);
             border: none;
-            padding: 20px 50px;      /* Larger button touch area */
+            padding: 20px 50px;
             font-family: 'Michroma', sans-serif;
-            font-size: 1.4rem;       /* Larger button text */
+            font-size: 1.4rem;
             letter-spacing: 3px;
             font-weight: 400;
             text-transform: uppercase;
@@ -113,7 +148,7 @@
         .hsr-btn:hover {
             background: var(--hsr-gold-hover);
             transform: scale(1.02);
-            box-shadow: 0 0 15px var(--hsr-gold);
+            box-shadow: 0 0 20px rgba(215, 188, 133, 0.6);
         }
 
         .hsr-btn:disabled {
@@ -126,11 +161,10 @@
 
         .timer-bar-container {
             width: 100%;
-            height: 6px;             /* Thicker bar for visibility */
+            height: 6px;
             background: rgba(255,255,255,0.1);
             position: absolute;
-            top: 0;
-            left: 0;
+            top: 0; left: 0;
         }
 
         .timer-bar {
@@ -139,10 +173,10 @@
             width: 100%;
         }
 
-        /* --- QUESTION BOX (MODIFIED: LARGER TEXT) --- */
+        /* --- QUESTION BOX --- */
         .question-box {
             background: rgba(0,0,0,0.3);
-            border-left: 6px solid var(--hsr-gold); /* Thicker accent */
+            border-left: 6px solid var(--hsr-gold);
             padding: 30px;
             width: 100%;
             margin-bottom: 30px;
@@ -152,16 +186,16 @@
         h3#question-text {
             font-family: 'Rajdhani', sans-serif;
             font-weight: 600;
-            font-size: 2.2rem;       /* MUCH Larger for readability */
+            font-size: 2.2rem;
             margin: 0;
             line-height: 1.3;
         }
 
-        /* --- OPTIONS (MODIFIED: WRAPPING & SIZE) --- */
+        /* --- OPTIONS --- */
         .options-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 25px;               /* More space between buttons */
+            gap: 25px;
             width: 100%;
         }
 
@@ -174,17 +208,14 @@
             transition: 0.3s;
             position: relative;
             clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%);
-            
-            /* NEW: Text Handling & Size */
-            font-size: 1.6rem;       /* Large text for options */
-            display: flex;           /* Flexbox ensures vertical centering */
-            align-items: center;     /* Center text vertically */
-            min-height: 80px;        /* Minimum height so they look substantial */
-            word-wrap: break-word;   /* Ensures really long words wrap */
-            line-height: 1.3;        /* Readable spacing for multiple lines */
+            font-size: 1.6rem;
+            display: flex;
+            align-items: center;
+            min-height: 80px;
+            word-wrap: break-word;
+            line-height: 1.3;
         }
 
-        /* Visual state for the selected/correct answer */
         .option-card.correct-answer {
             background: rgba(89, 217, 166, 0.2);
             border-color: var(--hsr-highlight-green);
@@ -195,7 +226,7 @@
         .option-card::before {
             content: '';
             position: absolute;
-            left: 0; top: 0; bottom: 0; width: 6px; /* Thicker accent line */
+            left: 0; top: 0; bottom: 0; width: 6px;
             background: var(--hsr-subtext);
             transition: 0.3s;
         }
@@ -207,9 +238,9 @@
             font-family: 'Rajdhani', sans-serif;
             font-weight: 700;
             color: var(--hsr-gold);
-            font-size: 1.8rem;       /* Larger HUD */
+            font-size: 1.8rem;
             letter-spacing: 1px;
-            font-style: italic;      /* Speed aesthetic */
+            font-style: italic;
         }
 
         #loading-overlay {
@@ -233,6 +264,8 @@
     </style>
 </head>
 <body>
+
+    <div id="bg-fx"></div>
 
     <div id="game-container">
         
@@ -320,8 +353,42 @@
             nextReviewBtn: document.getElementById('next-review-btn')
         };
 
+        // --- PARTICLE GENERATOR (NEW) ---
+        function initBackgroundEffects() {
+            const container = document.getElementById('bg-fx');
+            const particleCount = 20; // Number of particles
+
+            for (let i = 0; i < particleCount; i++) {
+                const p = document.createElement('div');
+                p.classList.add('particle');
+                
+                // Randomize properties for organic look
+                const size = Math.random() * 5 + 2; // Size between 2px and 7px
+                const startLeft = Math.random() * 100; // Start position (0-100% width)
+                const duration = Math.random() * 15 + 10; // Speed (10s to 25s)
+                const delay = Math.random() * 10; // Start delay
+                const opacity = Math.random() * 0.3 + 0.1; // Max opacity (0.1 to 0.4)
+
+                p.style.width = `${size}px`;
+                p.style.height = `${size}px`;
+                p.style.left = `${startLeft}%`;
+                p.style.animationName = 'floatUp';
+                p.style.animationDuration = `${duration}s`;
+                p.style.animationDelay = `-${delay}s`; // Negative delay starts animation mid-way
+                p.style.animationIterationCount = 'infinite';
+                p.style.animationTimingFunction = 'linear';
+                p.style.setProperty('--target-opacity', opacity); // Pass var to CSS
+
+                container.appendChild(p);
+            }
+        }
+
         // --- XML LOADER ---
         window.addEventListener('DOMContentLoaded', async () => {
+            
+            // Start the background effect immediately
+            initBackgroundEffects();
+
             try {
                 // Fetch the XML file
                 const response = await fetch('questions.xml');
