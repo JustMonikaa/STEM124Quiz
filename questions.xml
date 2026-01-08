@@ -1,36 +1,170 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <quiz>
     <item>
-        <question>Which law states that F = ma?</question>
+        <question>Which quality of a research question focuses on the availability of technical expertise, time, and budget required to see the project through to completion?</question>
         <options>
-            <option>Newton's First Law</option>
-            <option>Newton's Second Law</option>
-            <option>Newton's Third Law</option>
-            <option>Law of Inertia</option>
+            <option>Novelty</option>
+            <option>Relevance</option>
+            <option>Feasibility</option>
+            <option>Practicality</option>
         </options>
-        <answer>1</answer> 
+        <answer>3</answer> 
     </item>
 
     <item>
-        <question>What is the SI unit of Force?</question>
+        <question>In the context of scientific inquiry, what is the term for the requirement that a claim must be able to be contradicted by empirical evidence?</question>
         <options>
-            <option>Joule</option>
-            <option>Watt</option>
-            <option>Newton</option>
-            <option>Pascal</option>
+            <option>Empiricism</option>
+            <option>Falsifiability</option>
+            <option>Verificationism</option>
+            <option>Testability</option>
         </options>
         <answer>2</answer>
     </item>
 
     <item>
-        <question>Sound travels fastest in which medium?</question>
+        <question>Which component of an experiment is defined as the specific outcome or behavior that the researcher observes and records as the result of a manipulation?</question>
         <options>
-            <option>Vacuum</option>
-            <option>Air</option>
-            <option>Water</option>
-            <option>Steel</option>
+            <option>Controlled variable</option>
+            <option>Independent variable</option>
+            <option>Dependent variable</option>
+            <option>Confounding variable</option>
         </options>
         <answer>3</answer>
     </item>
 
+    <item>
+        <question>What is the name for the process of translating an abstract concept, such as 'intelligence' or 'stress,' into a set of concrete, measurable operations?</question>
+        <options>
+            <option>Operationalism</option>
+            <option>Conceptualization</option>
+            <option>Standardization</option>
+            <option>Categorization</option>
+        </options>
+        <answer>1</answer>
+    </item>
+
+        <item>
+        <question>Which type of validity is concerned with the degree to which a researcher can confidently state that no other factor besides the manipulation caused the observed results?</question>
+        <options>
+            <option>Reliability</option>
+            <option>External Validity</option>
+            <option>Internal Validity</option>
+            <option>Construct Validity</option>
+        </options>
+        <answer>3</answer>
+    </item>
+    
+        <item>
+        <question>
+This is a factor that is held constant across all groups in an experiment to ensure that it does not provide an alternative explanation for the findings.</question>
+        <options>
+            <option>Independent Variable</option>
+            <option>Controlled Variable</option>
+            <option>Random Variable</option>
+            <option>Extraneous Variable</option>
+        </options>
+        <answer>2</answer>
+    </item>
+
+        <item>
+        <question>
+In hypothesis testing, which statement represents the assumption that the experimental treatment will result in no observable difference between groups?</question>
+        <options>
+            <option>Null Hypothesis</option>
+            <option>Theoretical Hypothesis</option>
+            <option>Operational Hypothesis</option>
+            <option>Alternative Hypothesis</option>
+        </options>
+        <answer>1</answer>
+    </item>
+
+        <item>
+        <question>What is the primary function of the 'p-value' in statistical analysis?</question>
+        <options>
+            <option>To determine if the research was ethical and followed FINER criteria.</option>
+            <option>To indicate the probability that the observed results occurred solely due to random chance.</option>
+            <option>To measure the magnitude or size of the experimental effect.</option>
+            <option>To prove that the researcher's theory is 100% accurate.</option>
+        </options>
+        <answer>2</answer>
+    </item>
+    
+<item>
+        <question>Which of the FINER criteria ensures that the research question adds something new to the existing body of scientific literature?</question>
+        <options>
+            <option>Interesting</option>
+            <option>Ethical</option>
+            <option>Relevant</option>
+            <option>Novel</option>
+        </options>
+        <answer>4</answer>
+    </item>
+
+<item>
+        <question>When a researcher can generalize their findings from a small laboratory group to the broader population at large, the study is said to have high levels of what?</question>
+        <options>
+            <option>Reliability</option>
+            <option>Construct Validity</option>
+            <option>External Validity</option>
+            <option>Internal Validity</option>
+        </options>
+        <answer>3</answer>
+    </item>
+
+<item>
+        <question>A student wants to see if music helps plants grow. They give 5 plants 'Classical Music' and 5 plants 'Silence.' What is the Independent Variable?</question>
+        <options>
+            <option>Type of music</option>
+            <option>Type of soil used</option>
+            <option>Amount of sunlight</option>
+            <option>Growth height of the plants</option>
+        </options>
+        <answer>1</answer>
+    </item>
+
+<item>
+        <question>In the same plant study (in the previous question), the student measures the final height of each plant in centimeters. What is the height?</question>
+        <options>
+            <option>Controlled variable</option>
+            <option>Independent variable</option>
+            <option>Extraneous variable</option>
+            <option>Dependent variable</option>
+        </options>
+        <answer>4</answer>
+    </item>
+
+<item>
+        <question>A study on a new energy drink finds a p-value of p = 0.02. If the standard threshold is 0.05, what should the researcher do?</question>
+        <options>
+            <option>Fail to Reject the Null Hypothesis</option>
+            <option>Reject the Null Hypothesis</option>
+            <option>Accept the Null Hypothesis</option>
+            <option>Throw away the Data</option>
+        </options>
+        <answer>2</answer>
+    </item>
+
+<item>
+        <question>A researcher tests if 'Temperature' affects 'Study Time.' They make sure everyone uses the same desk and the same lighting. Same desk and lighting are:</question>
+        <options>
+            <option>Independent variable/option>
+            <option>Extraneous variable</option>
+            <option>Controlled variable</option>
+            <option>Dependent variable</option>
+        </options>
+        <answer>3</answer>
+    </item>
+
+<item>
+        <question>A researcher finds that kids who eat breakfast have higher grades. However, they realize the breakfast group also gets more sleep. The 'sleep' factor is a:</question>
+        <options>
+            <option>Independent variable/option>
+            <option>Dependent variable</option>
+            <option>Extraneous variable</option>
+            <option>Confounding variable</option>
+        </options>
+        <answer>4</answer>
+    </item>
+    
     </quiz>
