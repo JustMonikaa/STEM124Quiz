@@ -17,12 +17,13 @@
             --hsr-highlight-red: #D95959;
         }
 
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@400;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Michroma&family=Rajdhani:wght@400;500;600;700&display=swap');
 
         body {
             margin: 0;
             padding: 0;
-            font-family: 'Rajdhani', sans-serif;
+            font-family: 'Rajdhani', sans-serif; /* The "UI" font */
+            font-weight: 500; /* Make it slightly thicker by default */
             background-color: var(--hsr-bg);
             background-image: 
                 radial-gradient(circle at 20% 20%, rgba(29, 33, 50, 0.8) 0%, transparent 50%),
@@ -71,11 +72,12 @@
         }
 
         h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 3rem;
+            font-family: 'Michroma', sans-serif; /* The "Logo/Title" font */
+            font-size: 2.5rem; /* Michroma is wide, so we shrink size slightly */
             color: var(--hsr-gold);
             margin-bottom: 20px;
             text-transform: uppercase;
+            letter-spacing: 2px; /* Key HSR look */
         }
 
         h2 { font-size: 2rem; margin-bottom: 20px; }
@@ -86,13 +88,15 @@
             color: var(--hsr-dark-blue);
             border: none;
             padding: 15px 40px;
-            font-size: 1.2rem;
-            font-weight: 700;
             text-transform: uppercase;
             cursor: pointer;
             margin-top: 30px;
             clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
             transition: all 0.2s ease;
+            font-family: 'Michroma', sans-serif; /* Buttons look great with this too */
+            font-size: 1rem;
+            letter-spacing: 3px; /* Wide spacing looks very "Star Rail" */
+            font-weight: 400;
         }
 
         .hsr-btn:hover {
@@ -171,9 +175,11 @@
         .info-hud {
             position: absolute;
             top: 20px; right: 20px;
-            font-family: 'Orbitron', sans-serif;
             color: var(--hsr-gold);
-            font-size: 1.2rem;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700; /* Bold numbers */
+            font-size: 1.5rem;
+            letter-spacing: 1px;
         }
 
         /* Loading Overlay */
@@ -187,6 +193,12 @@
             align-items: center;
             color: var(--hsr-gold);
             font-family: 'Orbitron';
+        }
+
+        h3#question-text {
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+            font-size: 1.4rem;
         }
 
         @keyframes fadeIn {
@@ -445,4 +457,5 @@
         }
     </script>
 </body>
+
 </html>
