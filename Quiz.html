@@ -4,10 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HSR Style Quiz</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Michroma&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <style>
         /* --- CORE HSR AESTHETICS --- */
-        @import url('https://fonts.googleapis.com/css2?family=Michroma&family=Rajdhani:wght@400;500;600;700&display=swap');
-        
         :root {
             --hsr-gold: #D7BC85;
             --hsr-gold-hover: #F2E3C4;
@@ -18,12 +21,11 @@
             --hsr-highlight-green: #59D9A6;
             --hsr-highlight-red: #D95959;
         }
-    
+
         body {
             margin: 0;
             padding: 0;
-            font-family: 'Rajdhani', sans-serif; /* The "UI" font */
-            font-weight: 500; /* Make it slightly thicker by default */
+            font-family: 'Rajdhani', sans-serif;
             background-color: var(--hsr-bg);
             background-image: 
                 radial-gradient(circle at 20% 20%, rgba(29, 33, 50, 0.8) 0%, transparent 50%),
@@ -35,12 +37,14 @@
             align-items: center;
             overflow: hidden;
             user-select: none;
+            font-weight: 500;
         }
 
+        /* --- CONTAINER (MODIFIED: WIDER) --- */
         #game-container {
-            width: 90%;
-            max-width: 1000px;
-            height: 80vh;
+            width: 95%;              /* Takes up more screen width */
+            max-width: 1400px;       /* Increased from 1000px to 1400px */
+            height: 85vh;            /* Slightly taller to accommodate large text */
             position: relative;
             background: rgba(28, 31, 43, 0.7);
             border: 1px solid rgba(215, 188, 133, 0.3);
@@ -71,37 +75,44 @@
             opacity: 1;
         }
 
+        /* --- TYPOGRAPHY (MODIFIED: LARGER) --- */
         h1 {
-            font-family: 'Michroma', sans-serif; /* The "Logo/Title" font */
-            font-size: 2.5rem; /* Michroma is wide, so we shrink size slightly */
+            font-family: 'Michroma', sans-serif;
+            font-size: 3.5rem;       /* Increased size */
             color: var(--hsr-gold);
             margin-bottom: 20px;
             text-transform: uppercase;
-            letter-spacing: 2px; /* Key HSR look */
+            letter-spacing: 2px;
         }
 
-        h2 { font-size: 2rem; margin-bottom: 20px; }
-        p { font-size: 1.2rem; color: var(--hsr-subtext); max-width: 600px; line-height: 1.5; }
+        h2 { font-size: 2.5rem; margin-bottom: 20px; } /* Increased size */
+        
+        p { 
+            font-size: 1.5rem;       /* Increased size for instructions */
+            color: var(--hsr-subtext); 
+            max-width: 800px;        /* Allowed wider text block */
+            line-height: 1.6; 
+        }
 
         .hsr-btn {
             background: var(--hsr-gold);
             color: var(--hsr-dark-blue);
             border: none;
-            padding: 15px 40px;
+            padding: 20px 50px;      /* Larger button touch area */
+            font-family: 'Michroma', sans-serif;
+            font-size: 1.4rem;       /* Larger button text */
+            letter-spacing: 3px;
+            font-weight: 400;
             text-transform: uppercase;
             cursor: pointer;
             margin-top: 30px;
             clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
             transition: all 0.2s ease;
-            font-family: 'Michroma', sans-serif; /* Buttons look great with this too */
-            font-size: 1rem;
-            letter-spacing: 3px; /* Wide spacing looks very "Star Rail" */
-            font-weight: 400;
         }
 
         .hsr-btn:hover {
             background: var(--hsr-gold-hover);
-            transform: scale(1.05);
+            transform: scale(1.02);
             box-shadow: 0 0 15px var(--hsr-gold);
         }
 
@@ -115,7 +126,7 @@
 
         .timer-bar-container {
             width: 100%;
-            height: 4px;
+            height: 6px;             /* Thicker bar for visibility */
             background: rgba(255,255,255,0.1);
             position: absolute;
             top: 0;
@@ -128,31 +139,49 @@
             width: 100%;
         }
 
+        /* --- QUESTION BOX (MODIFIED: LARGER TEXT) --- */
         .question-box {
             background: rgba(0,0,0,0.3);
-            border-left: 4px solid var(--hsr-gold);
-            padding: 20px;
+            border-left: 6px solid var(--hsr-gold); /* Thicker accent */
+            padding: 30px;
             width: 100%;
             margin-bottom: 30px;
             text-align: left;
         }
 
+        h3#question-text {
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+            font-size: 2.2rem;       /* MUCH Larger for readability */
+            margin: 0;
+            line-height: 1.3;
+        }
+
+        /* --- OPTIONS (MODIFIED: WRAPPING & SIZE) --- */
         .options-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 20px;
+            gap: 25px;               /* More space between buttons */
             width: 100%;
         }
 
         .option-card {
             background: rgba(255,255,255,0.05);
             border: 1px solid rgba(255,255,255,0.1);
-            padding: 15px 20px;
+            padding: 20px 25px;
             text-align: left;
             cursor: pointer;
             transition: 0.3s;
             position: relative;
             clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%);
+            
+            /* NEW: Text Handling & Size */
+            font-size: 1.6rem;       /* Large text for options */
+            display: flex;           /* Flexbox ensures vertical centering */
+            align-items: center;     /* Center text vertically */
+            min-height: 80px;        /* Minimum height so they look substantial */
+            word-wrap: break-word;   /* Ensures really long words wrap */
+            line-height: 1.3;        /* Readable spacing for multiple lines */
         }
 
         /* Visual state for the selected/correct answer */
@@ -166,7 +195,7 @@
         .option-card::before {
             content: '';
             position: absolute;
-            left: 0; top: 0; bottom: 0; width: 4px;
+            left: 0; top: 0; bottom: 0; width: 6px; /* Thicker accent line */
             background: var(--hsr-subtext);
             transition: 0.3s;
         }
@@ -174,15 +203,15 @@
 
         .info-hud {
             position: absolute;
-            top: 20px; right: 20px;
-            color: var(--hsr-gold);
+            top: 25px; right: 30px;
             font-family: 'Rajdhani', sans-serif;
-            font-weight: 700; /* Bold numbers */
-            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--hsr-gold);
+            font-size: 1.8rem;       /* Larger HUD */
             letter-spacing: 1px;
+            font-style: italic;      /* Speed aesthetic */
         }
 
-        /* Loading Overlay */
         #loading-overlay {
             position: absolute;
             top:0; left:0; width:100%; height:100%;
@@ -192,13 +221,8 @@
             justify-content: center;
             align-items: center;
             color: var(--hsr-gold);
-            font-family: 'Orbitron';
-        }
-
-        h3#question-text {
-            font-family: 'Rajdhani', sans-serif;
-            font-weight: 600;
-            font-size: 1.4rem;
+            font-family: 'Michroma', sans-serif;
+            font-size: 1.5rem;
         }
 
         @keyframes fadeIn {
@@ -222,8 +246,8 @@
 
         <div id="instruction-screen" class="screen">
             <h2>Mission Briefing</h2>
-            <div style="text-align: left; background: rgba(0,0,0,0.4); padding: 20px; border: 1px solid #333; margin-bottom: 20px;">
-                <p><strong>1.</strong> The quiz consists of <span id="total-questions-count">15</span> questions.</p>
+            <div style="text-align: left; background: rgba(0,0,0,0.4); padding: 30px; border: 1px solid #333; margin-bottom: 20px; width: 80%;">
+                <p><strong>1.</strong> The quiz consists of <span id="total-questions-count">--</span> questions.</p>
                 <p><strong>2.</strong> You have 60 seconds per question.</p>
                 <p><strong>3.</strong> If the timer runs out, the system advances automatically.</p>
                 <p><strong>4.</strong> Review phase will initiate upon completion.</p>
@@ -237,7 +261,7 @@
             </div>
             
             <div class="info-hud">
-                <span id="question-counter">01</span> / <span id="total-count-hud">15</span>
+                <span id="question-counter">01</span> / <span id="total-count-hud">--</span>
             </div>
 
             <div class="question-box animate-entry">
@@ -247,8 +271,10 @@
             <div class="options-grid" id="options-container">
                 </div>
 
-            <button id="show-answer-btn" class="hsr-btn" style="display:none;" onclick="revealAnswer()">Show Answer</button>
-            <button id="next-review-btn" class="hsr-btn" style="display:none; margin-left: 10px; background-color: #555;" onclick="nextReviewQuestion()">Next</button>
+            <div style="margin-top: 20px;">
+                <button id="show-answer-btn" class="hsr-btn" style="display:none;" onclick="revealAnswer()">Show Answer</button>
+                <button id="next-review-btn" class="hsr-btn" style="display:none; margin-left: 20px; background-color: #555;" onclick="nextReviewQuestion()">Next</button>
+            </div>
         </div>
 
         <div id="times-up-screen" class="screen">
@@ -272,7 +298,6 @@
         let timerInterval;
         let timeLeft = 60;
         let isReviewMode = false;
-        let correctAnswersCount = 0; // Tracks score for user reference
 
         // --- DOM ELEMENTS ---
         const screens = {
@@ -313,13 +338,8 @@
                 
                 // Parse XML into our Javascript Array
                 quizData = Array.from(items).map(item => {
-                    // Get Question Text
                     const qText = item.getElementsByTagName("question")[0].textContent;
-                    
-                    // Get Options
                     const opts = Array.from(item.getElementsByTagName("option")).map(o => o.textContent);
-                    
-                    // Get Correct Index (ensure it's an integer)
                     const ansIndex = parseInt(item.getElementsByTagName("answer")[0].textContent);
                     
                     return {
@@ -329,16 +349,14 @@
                     };
                 });
 
-                // Update UI with question count
                 ui.totalHud.innerText = quizData.length;
                 ui.totalIntro.innerText = quizData.length;
 
-                // Hide loading, show title
                 screens.loading.style.display = 'none';
                 showScreen('title');
 
             } catch (e) {
-                screens.loading.innerHTML = "Error loading 'questions.xml'.<br>If running locally, please use a Local Server (e.g. VS Code Live Server).";
+                screens.loading.innerHTML = "Error loading 'questions.xml'.<br>Ensure you are running on a Server (or GitHub Pages).";
                 console.error("XML Load Error:", e);
             }
         });
@@ -346,7 +364,7 @@
         // --- NAVIGATION ---
         function showScreen(screenName) {
             Object.values(screens).forEach(s => {
-                if(s.id !== 'loading-overlay') { // Don't mess with loading screen logic here
+                if(s.id !== 'loading-overlay') {
                     s.classList.remove('active');
                     s.style.display = 'none';
                 }
@@ -415,7 +433,6 @@
         }
 
         function nextQuestion() {
-            // Force transition reset for next bar
             ui.timerBar.style.transition = 'none';
             ui.timerBar.style.width = '100%';
             
@@ -457,6 +474,4 @@
         }
     </script>
 </body>
-
 </html>
-
